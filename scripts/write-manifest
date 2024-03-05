@@ -1,0 +1,116 @@
+const { getAudioDurationInSeconds } = require("get-audio-duration");
+
+async function buildManifest(baseUrl) {
+  const result = {
+    "@context": "http://iiif.io/api/presentation/3/context.json",
+    id: `${BASE_URL}/manifest.json#sam-klein-interview`,
+    type: "Manifest",
+    label: { none: ["Sam Klein - Oral History Interview"] },
+    metadata: [
+      {
+        label: { none: ["Abstract"] },
+        value: { none: ["Sam Klein discusses his life."] }
+      },
+      {
+        label: { none: ["Contributor"] },
+        value: {
+          none: ["Klein, Sam (Speaker)", "Dreyfuss, Phyllis (Interviewer)"]
+        }
+      },
+      {
+        label: { none: ["Date"] },
+        value: { none: ["November 19, 1993"] }
+      },
+      {
+        label: { none: ["Genre"] },
+        value: { none: ["audiocassettes"] }
+      },
+      {
+        label: { none: ["Last Modified"] },
+        value: { none: ["2024-03-04T18:48:13.973637Z"] }
+      },
+      { label: { none: ["Language"] }, value: { none: ["English"] } },
+      { label: { none: ["Provenance"] }, value: { none: [] } },
+      {
+        label: { none: ["Rights Statement"] },
+        value: { none: ["In Copyright - Educational Use Permitted"] }
+      }
+    ],
+    summary: { none: [] },
+    rights: "http://rightsstatements.org/vocab/InC-EDU/1.0/",
+    items: []
+  };
+
+  for (var tape = 1; tape <= 5; tape++) {
+    for (var side = 1; side <= 2; side++) {
+      const duration = (await getAudioDurationInSeconds(`${__dirname}/../public/assets/audio/sam_klein_0${tape}_0${side}.mp3`)).toString();
+      result.items.push({
+        id: `${BASE_URL}/manifest.json#sam_klein/volume-${tape}/side-${side}`,
+        type: "Canvas",
+        height: 100,
+        width: 100,
+        duration,
+        label: { none: [`Volume ${tape}, Side ${side}`] },
+        thumbnail: [
+          {
+            id: `${BASE_URL}/assets/img/thumbnail_0${tape}.jpg`,
+            type: "Image",
+            format: "image/jpeg",
+            height: "100",
+            width: "162"
+          }
+        ],
+        items: [
+          {
+            id: `${BASE_URL}/manifest.json#sam_klein/volume-${tape}/side-${side}/annotation-page`,
+            type: "AnnotationPage",
+            items: [
+              {
+                id: `${BASE_URL}/manifest.json#sam_klein/volume-${tape}/side-${side}/annotation`,
+                type: "Annotation",
+                motivation: "painting",
+                target: `sam_klein_0${tape}_0${side}`,
+                body: {
+                  id: `${BASE_URL}/assets/audio/sam_klein_0${tape}_0${side}.mp3`,
+                  type: "Sound",
+                  format: "application/x-mpegurl",
+                  duration
+                }
+              }
+            ]
+          }
+        ],
+        annotations: [
+          {
+            id: `${BASE_URL}/manifest.json#sam_klein/volume-${tape}/side-${side}/annotation-vtt-page`,
+            type: "AnnotationPage",
+            label: { none: ["Transcript"] },
+            items: [
+              {
+                id: `${BASE_URL}/manifest.json#sam_klein/volume-${tape}/side-${side}/annotation-vtt`,
+                type: "Annotation",
+                motivation: "supplementing",
+                target: `sam_klein_0${tape}_0${side}`,
+                body: {
+                  id: `${BASE_URL}/assets/vtt/sam_klein_0${tape}_0${side}.vtt`,
+                  type: "Text",
+                  format: "text/vtt",
+                  label: { none: ["Transcript"] },
+                  duration
+                }
+              }
+            ]
+          }
+        ]
+      });
+    }
+  }
+
+  return JSON.stringify(result, null, 2);
+}
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+const fs = require("node:fs");
+buildManifest(BASE_URL).then((manifest) => {
+  fs.writeFileSync(`${__dirname}/../public/manifest.json`, manifest);
+});

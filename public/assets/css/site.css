@@ -1,0 +1,17 @@
+div:has(dl#iiif-manifest-metadata) {
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+div[role="radiogroup"] {
+  overflow-x: hidden;
+}
+
+form:has(label[for="information-toggle"]) {
+  display: none;
+}
+
+#iiif-logo {
+  display: none;
+}
