@@ -13,12 +13,17 @@ const Viewer = dynamic(
 
 const vizOptions: ConstructorOptions = {
   ledBars: true,
-  mode: 6,
+  mode: 10,
   showPeaks: false,
+  fillAlpha: 0,
+  lineWidth: 2,
+  reflexAlpha: 1,
+  reflexRatio: 0.5
 };
 
 const Page = () => {
-  const iiifContent = "/manifest.json";
+  const iiifContent =
+    `${process.env.NEXT_PUBLIC_BASE_URL}/manifest.json`;
   const options = {
     audioVisualizer: {
       component: AudioMotionVisualizer,
@@ -30,7 +35,8 @@ const Page = () => {
       vtt: {
         autoScroll: { enabled: true, settings: { behavior: "smooth", block: "center" } },
       },
-      renderAbout: false,
+      renderAbout: true,
+      renderAnnotation: true,
       renderToggle: true
     }
   };

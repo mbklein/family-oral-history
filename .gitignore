@@ -6,3 +6,4 @@ public/assets/vtt
 .next
 out
 .env.local
+.venv

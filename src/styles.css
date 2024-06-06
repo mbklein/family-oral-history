@@ -15,3 +15,18 @@ form:has(label[for="information-toggle"]) {
 #iiif-logo {
   display: none;
 }
+
+.webvtt-cue, .webvtt-cue * {
+  display: block;
+  width: 100%;
+}
+
+.webvtt-cue [title="dreyfus"] {
+  text-align: left;
+  font-style: italic;
+}
+
+.webvtt-cue [title="klein"] {
+  text-align: right;
+  font-weight: bold;
+}

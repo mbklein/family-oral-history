@@ -73,7 +73,7 @@ async function buildManifest(baseUrl) {
                 body: {
                   id: `${BASE_URL}/assets/audio/sam_klein_0${tape}_0${side}.mp3`,
                   type: "Sound",
-                  format: "application/x-mpegurl",
+                  format: "audio/mpeg",
                   duration
                 }
               }
