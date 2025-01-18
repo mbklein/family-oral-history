@@ -23,6 +23,7 @@ const nextConfig = {
       }
     ];
   },
+  output: "export",
   productionBrowserSourceMaps: true,
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"]
 };

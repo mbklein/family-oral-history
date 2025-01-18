@@ -35,12 +35,16 @@ const Page = () => {
       vtt: {
         autoScroll: { enabled: true, settings: { behavior: "smooth", block: "center" } },
       },
-      renderAbout: true,
+      renderAbout: false,
       renderAnnotation: true,
       renderToggle: true
     }
   };
-  return <Viewer iiifContent={iiifContent} options={options} />;
+  return (
+    <>
+      <Viewer iiifContent={iiifContent} options={options} />
+    </>
+  );
 };
 
 export default Page;
