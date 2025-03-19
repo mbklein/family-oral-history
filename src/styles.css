@@ -21,12 +21,20 @@ form:has(label[for="information-toggle"]) {
   width: 100%;
 }
 
+.webvtt-cue + strong {
+  font-family: monospace;
+  font-weight: normal !important;
+  font-size: 0.8rem;
+  margin-top: 0.1rem;
+  color: gray;
+}
+
 .webvtt-cue [title="dreyfus"] {
   text-align: left;
   font-style: italic;
 }
 
 .webvtt-cue [title="klein"] {
-  text-align: right;
+  text-align: left;
   font-weight: bold;
 }
