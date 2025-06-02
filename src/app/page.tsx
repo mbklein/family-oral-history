@@ -1,7 +1,6 @@
 'use client';
 
 import dynamic from "next/dynamic";
-import AudioMotionVisualizer from './components/AudioMotionVisualizer';
 import { ConstructorOptions } from "audiomotion-analyzer";
 
 const Viewer = dynamic(
@@ -25,10 +24,6 @@ const Page = () => {
   const iiifContent =
     `${process.env.NEXT_PUBLIC_BASE_URL}/manifest.json`;
   const options = {
-    audioVisualizer: {
-      component: AudioMotionVisualizer,
-      props: vizOptions
-    },
     showIIIFBadge: false,
     informationPanel: {
       open: true,
@@ -42,7 +37,7 @@ const Page = () => {
   };
   return (
     <>
-      <Viewer iiifContent={iiifContent} options={options} />
+      <Viewer iiifContent={iiifContent} />
     </>
   );
 };

@@ -3,49 +3,49 @@ const { getAudioDurationInSeconds } = require("get-audio-duration");
 async function buildManifest(baseUrl) {
   const result = {
     "@context": "http://iiif.io/api/presentation/3/context.json",
-    id: `${BASE_URL}/manifest.json#sam-klein-interview`,
+    id: `${BASE_URL}/manifest.json`,
     type: "Manifest",
-    label: { none: ["Sam Klein - Oral History Interview"] },
+    label: { en: ["Sam Klein - Oral History Interview"] },
     metadata: [
       {
-        label: { none: ["Abstract"] },
-        value: { none: ["Sam Klein discusses his life."] }
+        label: { en: ["Abstract"] },
+        value: { en: ["Sam Klein discusses his life."] }
       },
       {
-        label: { none: ["Contributor"] },
+        label: { en: ["Contributor"] },
         value: {
-          none: ["Klein, Sam (Speaker)", "Dreyfuss, Phyllis (Interviewer)"]
+          en: ["Klein, Sam (Speaker)", "Dreyfuss, Phyllis (Interviewer)"]
         }
       },
       {
-        label: { none: ["Date"] },
-        value: { none: ["November 19, 1993"] }
+        label: { en: ["Date"] },
+        value: { en: ["November 19, 1993"] }
       },
       {
-        label: { none: ["Genre"] },
-        value: { none: ["audiocassettes"] }
+        label: { en: ["Genre"] },
+        value: { en: ["audiocassettes"] }
       },
       {
-        label: { none: ["Last Modified"] },
-        value: { none: ["2024-03-04T18:48:13.973637Z"] }
+        label: { en: ["Last Modified"] },
+        value: { en: ["2024-03-04T18:48:13.973637Z"] }
       },
-      { label: { none: ["Language"] }, value: { none: ["English"] } },
-      { label: { none: ["Provenance"] }, value: { none: [] } },
+      { label: { en: ["Language"] }, value: { en: ["English"] } },
+      { label: { en: ["Provenance"] }, value: { en: [] } },
       {
-        label: { none: ["Rights Statement"] },
-        value: { none: ["In Copyright - Educational Use Permitted"] }
+        label: { en: ["Rights Statement"] },
+        value: { en: ["In Copyright - Educational Use Permitted"] }
       }
     ],
-    summary: { none: [] },
+    summary: { en: [] },
     rights: "http://rightsstatements.org/vocab/InC-EDU/1.0/",
     items: []
   };
 
   for (var tape = 1; tape <= 5; tape++) {
     for (var side = 1; side <= 2; side++) {
-      const duration = (await getAudioDurationInSeconds(`${__dirname}/../public/assets/audio/sam_klein_0${tape}_0${side}.mp3`)).toString();
+      const duration = (await getAudioDurationInSeconds(`${__dirname}/../public/assets/audio/sam_klein_0${tape}_0${side}.mp3`));
       result.items.push({
-        id: `${BASE_URL}/manifest.json#sam_klein/volume-${tape}/side-${side}`,
+        id: `${BASE_URL}/manifest.json/volume-${tape}/side-${side}/canvas`,
         type: "Canvas",
         height: 100,
         width: 100,
@@ -56,20 +56,20 @@ async function buildManifest(baseUrl) {
             id: `${BASE_URL}/assets/img/thumbnail_0${tape}.jpg`,
             type: "Image",
             format: "image/jpeg",
-            height: "100",
-            width: "162"
+            height: 100,
+            width: 162
           }
         ],
         items: [
           {
-            id: `${BASE_URL}/manifest.json#sam_klein/volume-${tape}/side-${side}/annotation-page`,
+            id: `${BASE_URL}/manifest.json/volume-${tape}/side-${side}/annotation-page`,
             type: "AnnotationPage",
             items: [
               {
-                id: `${BASE_URL}/manifest.json#sam_klein/volume-${tape}/side-${side}/annotation`,
+                id: `${BASE_URL}/manifest.json/volume-${tape}/side-${side}/annotation`,
                 type: "Annotation",
                 motivation: "painting",
-                target: `sam_klein_0${tape}_0${side}`,
+                target: `${BASE_URL}/manifest.json/volume-${tape}/side-${side}/canvas`,
                 body: {
                   id: `${BASE_URL}/assets/audio/sam_klein_0${tape}_0${side}.mp3`,
                   type: "Sound",
@@ -82,22 +82,21 @@ async function buildManifest(baseUrl) {
         ],
         annotations: [
           {
-            id: `${BASE_URL}/manifest.json#sam_klein/volume-${tape}/side-${side}/annotation-vtt-page`,
+            id: `${BASE_URL}/manifest.json/volume-${tape}/side-${side}/annotation-vtt-page`,
             type: "AnnotationPage",
-            label: { none: ["Transcript"] },
             items: [
               {
-                id: `${BASE_URL}/manifest.json#sam_klein/volume-${tape}/side-${side}/annotation-vtt`,
+                id: `${BASE_URL}/manifest.json/volume-${tape}/side-${side}/annotation-vtt`,
                 type: "Annotation",
                 motivation: "supplementing",
-                target: `sam_klein_0${tape}_0${side}`,
                 body: {
                   id: `${BASE_URL}/assets/vtt/sam_klein_0${tape}_0${side}.vtt`,
                   type: "Text",
                   format: "text/vtt",
-                  label: { none: ["Transcript"] },
+                  label: { en: ["Transcript"] },
                   duration
-                }
+                },
+                target: `${BASE_URL}/manifest.json/volume-${tape}/side-${side}/canvas`
               }
             ]
           }
