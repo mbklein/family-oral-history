@@ -10,16 +10,6 @@ const Viewer = dynamic(
   }
 );
 
-const vizOptions: ConstructorOptions = {
-  ledBars: true,
-  mode: 10,
-  showPeaks: false,
-  fillAlpha: 0,
-  lineWidth: 2,
-  reflexAlpha: 1,
-  reflexRatio: 0.5
-};
-
 const Page = () => {
   const iiifContent =
     `${process.env.NEXT_PUBLIC_BASE_URL}/manifest.json`;
@@ -28,16 +18,18 @@ const Page = () => {
     informationPanel: {
       open: true,
       vtt: {
-        autoScroll: { enabled: true, settings: { behavior: "smooth", block: "center" } },
+        autoScroll: {
+          enabled: true,
+          settings: { behavior: "smooth", block: "center" }
+        }
       },
-      renderAbout: false,
-      renderAnnotation: true,
-      renderToggle: true
+      defaultTab:
+        `${process.env.NEXT_PUBLIC_BASE_URL}/manifest.json/volume-1/side-1/annotation-vtt-page`
     }
   };
   return (
     <>
-      <Viewer iiifContent={iiifContent} />
+      <Viewer iiifContent={iiifContent} options={options} />
     </>
   );
 };
