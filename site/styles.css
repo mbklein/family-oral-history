@@ -4,9 +4,9 @@ div:has(dl#iiif-manifest-metadata) {
   overflow-y: auto;
 }
 
-div[role="radiogroup"] {
+/* div[role="radiogroup"] {
   overflow-x: hidden;
-}
+} */
 
 form:has(label[for="information-toggle"]) {
   display: none;

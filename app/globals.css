@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "../styles.css";
+@import "../site/styles.css";
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -30,12 +30,33 @@ body {
   height: 100%;
 }
 
-div.clover-viewer-media-wrapper div {
+/* div.clover-viewer-media-wrapper div {
   overflow: hidden;
-}
+} */
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.clover-viewer-media-controls {
+  display: none !important;
+}
+
+#audio-motion-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  /* or a fixed height like 500px */
+}
+
+#audio-motion-display {
+  flex: 1;
+  overflow: hidden;
+}
+
+#audio-motion-audio {
+  height: 32px;
+  width: 100%;
 }

@@ -1,6 +1,9 @@
+const path = require("path");
 const withMDX = require("@next/mdx")();
 
 /** @type {import('next').NextConfig} */
+const cloverSource = process.env.LOCAL_CLOVER ? path.resolve(__dirname, "../../clover-iiif/src") : undefined;;
+
 const nextConfig = {
   async headers() {
     return [
@@ -25,7 +28,22 @@ const nextConfig = {
   },
   output: "export",
   productionBrowserSourceMaps: true,
-  pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"]
+  pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
+  webpack: (config, { defaultLoaders }) => {
+    if (cloverSource) {
+      // Allow importing uncompiled source from the linked component
+      config.module.rules.push({
+        test: /\.(js|jsx|ts|tsx)$/,
+        include: [cloverSource],
+        use: defaultLoaders.babel
+      });
+
+      // Optional alias so imports like `@samvera/clover-iiif` resolve to the source directory
+      config.resolve.alias["@samvera/clover-iiif"] = cloverSource;
+      config.resolve.alias["src"] = cloverSource;
+    }
+    return config;
+  }
 };
 
 module.exports = withMDX(nextConfig);
