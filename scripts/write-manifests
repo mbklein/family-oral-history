@@ -1,0 +1,17 @@
+const buildBea = require("./manifest-bea").default;
+const buildSam = require("./manifest-sam").default;
+const buildCollection = require("./collection").default;
+
+const rootDir = __dirname;console
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+
+const fs = require("node:fs");
+buildSam(baseUrl, rootDir).then((manifest) => {
+  fs.writeFileSync(`${rootDir}/../public/sam_klein.json`, manifest);
+});
+buildBea(baseUrl, rootDir).then((manifest) => {
+  fs.writeFileSync(`${rootDir}/../public/bea_bass.json`, manifest);
+});
+buildCollection(baseUrl, rootDir).then((collection) => {
+  fs.writeFileSync(`${rootDir}/../public/collection.json`, collection);
+});

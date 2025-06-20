@@ -1,9 +1,9 @@
-const { getAudioDurationInSeconds } = require("get-audio-duration");
+import { getAudioDurationInSeconds } from "get-audio-duration";
 
-async function buildManifest(baseUrl) {
+async function buildManifest(baseUrl, rootDir) {
   const result = {
     "@context": "http://iiif.io/api/presentation/3/context.json",
-    id: `${BASE_URL}/manifest.json`,
+    id: `${baseUrl}/sam_klein.json`,
     type: "Manifest",
     label: { en: ["Sam Klein - Oral History Interview"] },
     metadata: [
@@ -43,9 +43,11 @@ async function buildManifest(baseUrl) {
 
   for (var tape = 1; tape <= 5; tape++) {
     for (var side = 1; side <= 2; side++) {
-      const duration = (await getAudioDurationInSeconds(`${__dirname}/../public/assets/audio/sam_klein_0${tape}_0${side}.mp3`));
+      const duration = await getAudioDurationInSeconds(
+        `${rootDir}/../public/assets/audio/sam_klein/sam_klein_0${tape}_0${side}.mp3`
+      );
       result.items.push({
-        id: `${BASE_URL}/manifest.json/volume-${tape}/side-${side}/canvas`,
+        id: `${baseUrl}/sam_klein.json/volume-${tape}/side-${side}/canvas`,
         type: "Canvas",
         height: 100,
         width: 100,
@@ -53,7 +55,7 @@ async function buildManifest(baseUrl) {
         label: { none: [`Volume ${tape}, Side ${side}`] },
         thumbnail: [
           {
-            id: `${BASE_URL}/assets/img/thumbnail_0${tape}.jpg`,
+            id: `${baseUrl}/assets/img/sam_klein/thumbnail_0${tape}.jpg`,
             type: "Image",
             format: "image/jpeg",
             height: 100,
@@ -62,16 +64,16 @@ async function buildManifest(baseUrl) {
         ],
         items: [
           {
-            id: `${BASE_URL}/manifest.json/volume-${tape}/side-${side}/annotation-page`,
+            id: `${baseUrl}/sam_klein.json/volume-${tape}/side-${side}/annotation-page`,
             type: "AnnotationPage",
             items: [
               {
-                id: `${BASE_URL}/manifest.json/volume-${tape}/side-${side}/annotation`,
+                id: `${baseUrl}/sam_klein.json/volume-${tape}/side-${side}/annotation`,
                 type: "Annotation",
                 motivation: "painting",
-                target: `${BASE_URL}/manifest.json/volume-${tape}/side-${side}/canvas`,
+                target: `${baseUrl}/sam_klein.json/volume-${tape}/side-${side}/canvas`,
                 body: {
-                  id: `${BASE_URL}/assets/audio/sam_klein_0${tape}_0${side}.mp3`,
+                  id: `${baseUrl}/assets/audio/sam_klein/sam_klein_0${tape}_0${side}.mp3`,
                   type: "Sound",
                   format: "audio/mpeg",
                   duration
@@ -82,21 +84,21 @@ async function buildManifest(baseUrl) {
         ],
         annotations: [
           {
-            id: `${BASE_URL}/manifest.json/volume-${tape}/side-${side}/annotation-vtt-page`,
+            id: `${baseUrl}/sam_klein.json/volume-${tape}/side-${side}/annotation-vtt-page`,
             type: "AnnotationPage",
             items: [
               {
-                id: `${BASE_URL}/manifest.json/volume-${tape}/side-${side}/annotation-vtt`,
+                id: `${baseUrl}/sam_klein.json/volume-${tape}/side-${side}/annotation-vtt`,
                 type: "Annotation",
                 motivation: "supplementing",
                 body: {
-                  id: `${BASE_URL}/assets/vtt/sam_klein_0${tape}_0${side}.vtt`,
+                  id: `${baseUrl}/assets/vtt/sam_klein/sam_klein_0${tape}_0${side}.vtt`,
                   type: "Text",
                   format: "text/vtt",
                   label: { en: ["Transcript"] },
                   duration
                 },
-                target: `${BASE_URL}/manifest.json/volume-${tape}/side-${side}/canvas`
+                target: `${baseUrl}/sam_klein.json/volume-${tape}/side-${side}/canvas`
               }
             ]
           }
@@ -108,8 +110,4 @@ async function buildManifest(baseUrl) {
   return JSON.stringify(result, null, 2);
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-const fs = require("node:fs");
-buildManifest(BASE_URL).then((manifest) => {
-  fs.writeFileSync(`${__dirname}/../public/manifest.json`, manifest);
-});
+export default buildManifest;

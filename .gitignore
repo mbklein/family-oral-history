@@ -1,5 +1,5 @@
 node_modules
-public/manifest.json
+public/*.json
 public/assets/audio
 public/assets/img
 public/assets/vtt

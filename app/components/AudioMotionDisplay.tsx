@@ -17,40 +17,41 @@ const defaultProps: ConstructorOptions = {
 };
 
 export default function AudioMotionDisplay({id, annotationBody, hooks, ...props}: AudioMotionProps) {
-  const [annotationPanel, setAnnotationPanel] = useState<boolean>(false);
-  const playerRef = useRef<HTMLVideoElement>(null);
+  const playerRef = useRef<HTMLAudioElement>(null);
+  const analyzerRef = useRef<AudioMotionAnalyzer | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const { useViewerDispatch } = hooks;
-  const [analyzer, setAnalyzer] = useState<AudioMotionAnalyzer | null>(null);
   const dispatch = useViewerDispatch();
   
   useEffect(() => {
-    if (!playerRef.current) return;
+    if (!playerRef.current || !containerRef.current || analyzerRef.current) return;
 
-    if (!analyzer) {
-      const newAnalyzer = new AudioMotionAnalyzer(
-        document.getElementById("audio-motion-display") as HTMLDivElement,
-        {
-          source: playerRef.current,
-          ...defaultProps,
-          ...props
-        }
-      );
-      setAnalyzer(newAnalyzer);
-      dispatch({
-        type: "updateActivePlayer",
-        player: playerRef.current
-      });
-    }
-  }, [analyzer, dispatch, id, annotationBody, playerRef, props, hooks]);
+    const newAnalyzer = new AudioMotionAnalyzer(
+      document.getElementById("audio-motion-display") as HTMLDivElement,
+      {
+        source: playerRef.current,
+        ...defaultProps,
+        ...props
+      }
+    );
+    analyzerRef.current = newAnalyzer;
+
+    dispatch({
+      type: "updateActivePlayer",
+      player: playerRef.current
+    });
+
+  }, [analyzerRef, containerRef, dispatch, id, annotationBody, playerRef, props, hooks]);
   
   return (
-    <div id="audio-motion-container">
+    <div id="audio-motion-container" ref={containerRef}>
       <div id="audio-motion-display"></div>
       <audio
         id="audio-motion-audio"
         ref={playerRef}
         src={annotationBody.id}
         controls
+        controlsList="nodownload"
       ></audio>
     </div>
   );

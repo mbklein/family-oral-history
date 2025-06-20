@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "predev": "node ./scripts/write-manifest",
+    "predev": "node ./scripts/write-manifests",
     "dev": "next dev",
-    "prebuild": "node ./scripts/write-manifest",
+    "prebuild": "node ./scripts/write-manifests",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

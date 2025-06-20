@@ -35,8 +35,6 @@ const customDisplays = [
 ];
 
 const Page = () => {
-  const iiifContent =
-    `${process.env.NEXT_PUBLIC_BASE_URL}/manifest.json`;
   const options = {
     showIIIFBadge: false,
     informationPanel: {
@@ -47,20 +45,20 @@ const Page = () => {
           settings: { behavior: "smooth", block: "center" }
         }
       },
-      // defaultTab:
-      //   `${process.env.NEXT_PUBLIC_BASE_URL}/manifest.json/volume-1/side-1/annotation-vtt-page`
       defaultTab: "manifest-annotations",
       renderAbout: false,
       renderToggle: false,
-      showTitle: false,
-    }
+    },
+    showTitle: false,
   };
+
   return (
     <>
-      <Viewer 
-        iiifContent={iiifContent} 
-        options={options} 
+      <Viewer
+        iiifContent={`${process.env.NEXT_PUBLIC_BASE_URL}/collection.json`}
+        options={options}
         customDisplays={customDisplays}
+        canvasIdCallback={console.log}
       />
     </>
   );
