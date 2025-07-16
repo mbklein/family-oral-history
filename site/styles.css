@@ -1,4 +1,4 @@
-div:has(dl#iiif-manifest-metadata) {
+/* div:has(dl#iiif-manifest-metadata) {
   width: 100%;
   overflow-x: hidden;
   overflow-y: auto;
@@ -29,7 +29,7 @@ form:has(label[for="information-toggle"]) {
   color: gray;
 }
 
-.webvtt-cue [title="dreyfus"] {
+.webvtt-cue [title="dreyfuss"] {
   text-align: left;
   font-style: italic;
 }

@@ -1,9 +1,11 @@
+.aws-sam/
+.env.local
+.next
+.venv/
 node_modules
+out
 public/*.json
 public/assets/audio
 public/assets/img
 public/assets/vtt
-.next
-out
-.env.local
-.venv
+samconfig.*
