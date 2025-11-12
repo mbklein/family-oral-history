@@ -16,6 +16,8 @@ const displayProps = {
   showPeaks: false,
   fillAlpha: 0,
   lineWidth: 2,
+  minFreq: 20,
+  maxFreq: 12000,
   reflexAlpha: 1,
   reflexRatio: 0.5,
   showScaleX: false,
