@@ -55,7 +55,7 @@ async function buildManifest(baseUrl, rootDir) {
         label: { none: [`Volume ${tape}, Side ${side}`] },
         thumbnail: [
           {
-            id: `${baseUrl}/assets/img/sam_klein/thumbnail_0${tape}.jpg`,
+            id: `${baseUrl}/assets/img/sam_klein/sam_klein_0${tape}_0${side}.jpg`,
             type: "Image",
             format: "image/jpeg",
             height: 100,

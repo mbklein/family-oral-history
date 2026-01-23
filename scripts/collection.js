@@ -13,7 +13,7 @@ async function buildCollection(baseUrl, rootDir) {
         label: { en: ["Sam Klein"] },
         thumbnail: [
           {
-            id: `${baseUrl}/assets/img/sam_klein/thumbnail_01.jpg`,
+            id: `${baseUrl}/assets/img/sam_klein/sam_klein_thumb.jpg`,
             type: "Image",
             format: "image/jpeg"
           }
@@ -25,7 +25,7 @@ async function buildCollection(baseUrl, rootDir) {
         label: { en: ["Beatty Bass"] },
         thumbnail: [
           {
-            id: `${baseUrl}/assets/img/bea_bass/thumbnail_01.jpg`,
+            id: `${baseUrl}/assets/img/bea_bass/bea_bass_thumb.jpg`,
             type: "Image",
             format: "image/jpeg"
           }
