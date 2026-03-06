@@ -37,6 +37,56 @@ Resources:
         OriginAccessControlOriginType: s3
         SigningBehavior: always
         SigningProtocol: sigv4
+  WebACL:
+    Type: AWS::WAFv2::WebACL
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: CreatedByCloudFront-f4b25d32
+      Scope: CLOUDFRONT
+      DefaultAction:
+        Allow: {}
+      VisibilityConfig:
+        SampledRequestsEnabled: true
+        CloudWatchMetricsEnabled: true
+        MetricName: CreatedByCloudFront-f4b25d32
+      Rules:
+        - Name: AWS-AWSManagedRulesAmazonIpReputationList
+          Priority: 0
+          OverrideAction:
+            Count: {}
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesAmazonIpReputationList
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: AWS-AWSManagedRulesAmazonIpReputationList
+        - Name: AWS-AWSManagedRulesCommonRuleSet
+          Priority: 1
+          OverrideAction:
+            Count: {}
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesCommonRuleSet
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: AWS-AWSManagedRulesCommonRuleSet
+        - Name: AWS-AWSManagedRulesKnownBadInputsRuleSet
+          Priority: 2
+          OverrideAction:
+            Count: {}
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesKnownBadInputsRuleSet
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: AWS-AWSManagedRulesKnownBadInputsRuleSet
   CloudFrontAuthFunction:
     Type: AWS::CloudFront::Function
     Properties:
@@ -74,6 +124,7 @@ Resources:
     Type: AWS::CloudFront::Distribution
     Properties:
       DistributionConfig:
+        WebACLId: !GetAtt WebACL.Arn
         ViewerCertificate:
           AcmCertificateArn: !Ref SSLCertificateArn
           MinimumProtocolVersion: TLSv1
@@ -87,6 +138,23 @@ Resources:
           S3OriginConfig:
             OriginAccessIdentity: ''
           OriginAccessControlId: !Sub "${OriginAccess.Id}"
+        CacheBehaviors:
+          - PathPattern: /assets/*
+            TargetOriginId: S3Origin
+            AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+            CachedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+            Compress: true
+            CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6 # CachingOptimized
+            ViewerProtocolPolicy: redirect-to-https
+            FunctionAssociations:
+            - EventType: viewer-request
+              FunctionARN: !Ref CloudFrontAuthFunction
         DefaultCacheBehavior:
           TargetOriginId: S3Origin
           AllowedMethods:
@@ -98,7 +166,7 @@ Resources:
           - HEAD
           - OPTIONS
           Compress: true
-          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
+          CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad # CachingDisabled
           ViewerProtocolPolicy: redirect-to-https
           FunctionAssociations:
           - EventType: viewer-request
@@ -113,3 +181,5 @@ Outputs:
       Fn::GetAtt:
       - CloudFrontDistribution
       - DomainName
+  WebACLArn:
+    Value: !GetAtt WebACL.Arn
