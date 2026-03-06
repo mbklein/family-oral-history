@@ -30,6 +30,8 @@ const nextConfig = {
   productionBrowserSourceMaps: true,
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
   webpack: (config, { defaultLoaders }) => {
+    config.devtool = "source-map"; // or 'hidden-source-map'
+
     if (cloverSource) {
       // Allow importing uncompiled source from the linked component
       config.module.rules.push({
