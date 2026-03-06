@@ -8,7 +8,6 @@ Parameters:
     Type: String
   AuthString:
     Type: String
-    AllowedPattern: ^\w.+:\w.+$
 Resources:
   ContentBucket:
     Type: AWS::S3::Bucket
@@ -50,9 +49,13 @@ Resources:
           const authString = "${AuthString}";
           const basicAuthHeader = headers.authorization && headers.authorization.value && headers.authorization.value.split(' ')[1];
 
-          // Check for the presence of the Authorization header
-          if (basicAuthHeader && (atob(basicAuthHeader) === authString)) {
-            return request;
+          // Check for the presence of the Authorization header with the correct password
+          if (basicAuthHeader) {
+            const authParts = atob(basicAuthHeader).split(':');
+            const password = authParts[1];
+            if (password === authString) {
+              return request;
+            }
           }
 
           // If the header is missing or incorrect, return a 401 Unauthorized response
@@ -60,7 +63,7 @@ Resources:
             statusCode: 401,
             statusDescription: 'Unauthorized',
             headers: {
-              'www-authenticate': { value: 'Basic realm="KBK Users"' }
+              'www-authenticate': { value: 'Basic realm="KBK Users (Contact Michael for the password)"' }
             }
           }
         }
