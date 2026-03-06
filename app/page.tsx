@@ -60,7 +60,6 @@ const Page = () => {
         iiifContent={`${process.env.NEXT_PUBLIC_BASE_URL}/collection.json`}
         options={options}
         customDisplays={customDisplays}
-        canvasIdCallback={console.log}
       />
     </>
   );
