@@ -1,14 +1,7 @@
-'use client';
-
-import dynamic from "next/dynamic";
+/// <reference types="vite/client" />
+import React from "react";
 import AudioMotionDisplay from "./components/AudioMotionDisplay";
-
-const Viewer = dynamic(
-  () => import("@samvera/clover-iiif").then((Clover) => Clover.Viewer),
-  {
-    ssr: false
-  }
-);
+import { Viewer } from "@samvera/clover-iiif";
 
 const displayProps = {
   ledBars: true,
@@ -21,7 +14,7 @@ const displayProps = {
   reflexAlpha: 1,
   reflexRatio: 0.5,
   showScaleX: false,
-  showScaleY: false,
+  showScaleY: false
 };
 
 const customDisplays = [
@@ -49,15 +42,15 @@ const Page = () => {
       },
       defaultTab: "manifest-annotations",
       renderAbout: false,
-      renderToggle: false,
+      renderToggle: false
     },
-    showTitle: false,
+    showTitle: false
   };
 
   return (
     <>
       <Viewer
-        iiifContent={`${process.env.NEXT_PUBLIC_BASE_URL}/collection.json`}
+        iiifContent={`${import.meta.env.VITE_BASE_URL}/collection.json`}
         options={options}
         customDisplays={customDisplays}
       />

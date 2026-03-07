@@ -1,5 +1,9 @@
+import React from "react";
 import AudioMotionAnalyzer, { ConstructorOptions } from "audiomotion-analyzer";
-import { LabeledIIIFExternalWebResource, ViewerContextStore } from "@samvera/clover-iiif";
+import {
+  LabeledIIIFExternalWebResource,
+  ViewerContextStore
+} from "@samvera/clover-iiif";
 import { useEffect, useRef } from "react";
 
 type AudioMotionProps = {
@@ -9,24 +13,35 @@ type AudioMotionProps = {
     useViewerState: () => ViewerContextStore;
     useViewerDispatch: () => (value: unknown) => void;
   };
-}
+};
 
 const defaultProps: ConstructorOptions = {
   showScaleX: false,
   showScaleY: false
 };
 
-export default function AudioMotionDisplay({id, annotationBody, hooks, ...props}: AudioMotionProps) {
+export default function AudioMotionDisplay({
+  id,
+  annotationBody,
+  hooks,
+  ...props
+}: AudioMotionProps) {
   const playerRef = useRef<HTMLAudioElement>(null);
   const analyzerRef = useRef<AudioMotionAnalyzer | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const displayRef = useRef<HTMLDivElement>(null);
   const { useViewerDispatch } = hooks;
   const dispatch = useViewerDispatch();
-  
+
   useEffect(() => {
-    console.log('Entering useEffect for AudioMotionDisplay with id:', id);
-    if (!playerRef.current || !containerRef.current || !displayRef.current || analyzerRef.current) return;
+    console.log("Entering useEffect for AudioMotionDisplay with id:", id);
+    if (
+      !playerRef.current ||
+      !containerRef.current ||
+      !displayRef.current ||
+      analyzerRef.current
+    )
+      return;
 
     analyzerRef.current = new AudioMotionAnalyzer(displayRef.current, {
       source: playerRef.current,
