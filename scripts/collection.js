@@ -1,4 +1,4 @@
-async function buildCollection(baseUrl, rootDir) {
+async function buildCollection(baseUrl, _rootDir) {
   const result = {
     "@context": "http://iiif.io/api/presentation/3/context.json",
     id: `${baseUrl}/collection`,
