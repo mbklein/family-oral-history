@@ -9,6 +9,7 @@ import { useEffect, useRef } from "react";
 type AudioMotionProps = {
   id: string;
   annotationBody: LabeledIIIFExternalWebResource;
+  showAnalyzer?: boolean;
   hooks: {
     useViewerState: () => ViewerContextStore;
     useViewerDispatch: () => (value: unknown) => void;
@@ -39,7 +40,8 @@ export default function AudioMotionDisplay({
       !playerRef.current ||
       !containerRef.current ||
       !displayRef.current ||
-      analyzerRef.current
+      analyzerRef.current ||
+      !props.showAnalyzer
     )
       return;
 
@@ -57,7 +59,9 @@ export default function AudioMotionDisplay({
 
   return (
     <div id="audio-motion-container" ref={containerRef}>
-      <div id="audio-motion-display" ref={displayRef}></div>
+      {props.showAnalyzer && (
+        <div id="audio-motion-display" ref={displayRef}></div>
+      )}
       <audio
         id="audio-motion-audio"
         ref={playerRef}

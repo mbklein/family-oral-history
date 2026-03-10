@@ -38,3 +38,54 @@ form:has(label[for="information-toggle"]) {
   text-align: left;
   font-weight: bold;
 }
+
+#root {
+  height: 100dvh;
+}
+
+.viewer-container {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+}
+
+.viewer-main {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+@media (max-width: 767px) {
+  .viewer-container {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .clover-viewer-header {
+    flex-shrink: 0;
+  }
+
+  .viewer-main {
+    display: contents;
+    /* dissolves — children join .viewer-container directly */
+  }
+
+  .clover-viewer-information-panel {
+    order: 2;
+    flex: 1 1 0;
+    min-height: 0;
+  }
+
+  .clover-viewer-painting {
+    order: 3;
+    flex-shrink: 0;
+    flex-grow: 0 !important;
+  }
+
+  .viewer-navigator {
+    order: 4;
+    flex-shrink: 0;
+  }
+}
