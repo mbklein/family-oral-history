@@ -9,7 +9,6 @@ import { useEffect, useRef } from "react";
 type AudioMotionProps = {
   id: string;
   annotationBody: LabeledIIIFExternalWebResource;
-  showAnalyzer?: boolean;
   hooks: {
     useViewerState: () => ViewerContextStore;
     useViewerDispatch: () => (value: unknown) => void;
@@ -20,6 +19,12 @@ const defaultProps: ConstructorOptions = {
   showScaleX: false,
   showScaleY: false
 };
+
+// Persists across remounts within the same session, keyed by track URL.
+const savedAudioState: Record<
+  string,
+  { currentTime: number; wasPlaying: boolean }
+> = {};
 
 export default function AudioMotionDisplay({
   id,
@@ -35,13 +40,33 @@ export default function AudioMotionDisplay({
   const dispatch = useViewerDispatch();
 
   useEffect(() => {
+    const player = playerRef.current;
+    const trackId = annotationBody.id;
+    if (!player || !trackId) return;
+
+    const saved = savedAudioState[trackId];
+    if (saved) {
+      player.currentTime = saved.currentTime;
+      if (saved.wasPlaying) {
+        player.play().catch(() => {});
+      }
+    }
+
+    return () => {
+      savedAudioState[trackId] = {
+        currentTime: player.currentTime,
+        wasPlaying: !player.paused
+      };
+    };
+  }, [annotationBody.id]);
+
+  useEffect(() => {
     console.log("Entering useEffect for AudioMotionDisplay with id:", id);
     if (
       !playerRef.current ||
       !containerRef.current ||
       !displayRef.current ||
-      analyzerRef.current ||
-      !props.showAnalyzer
+      analyzerRef.current
     )
       return;
 
@@ -59,9 +84,7 @@ export default function AudioMotionDisplay({
 
   return (
     <div id="audio-motion-container" ref={containerRef}>
-      {props.showAnalyzer && (
-        <div id="audio-motion-display" ref={displayRef}></div>
-      )}
+      <div id="audio-motion-display" ref={displayRef}></div>
       <audio
         id="audio-motion-audio"
         ref={playerRef}
